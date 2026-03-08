@@ -16,7 +16,8 @@
       <kanban-column 
         v-for="column in columns" 
         :key="column.id"
-        :column="column">
+        :column="column"
+        @create-card="createCard">
       </kanban-column>
     </div>
   </div>

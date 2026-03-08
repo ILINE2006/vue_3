@@ -30,6 +30,9 @@ Vue.component('kanban-column', {
         :key="card.id"
         :card="card">
       </kanban-card>
+      <button v-if="column.id === 1" @click="$emit('create-card', column.id)" class="btn btn-primary">
+        + Создать задачу
+      </button>
     </div>
   `
 })
@@ -43,5 +46,27 @@ let app = new Vue({
       { id: 3, name: 'Тестирование', cards: [] },
       { id: 4, name: 'Выполненные задачи', cards: [] }
     ]
+  },
+  methods: {
+    createCard(columnId) {
+      const title = prompt('Название задачи:')
+      const description = prompt('Описание:')
+      const deadline = prompt('Дэдлайн (YYYY-MM-DD):')
+      
+      if (title && deadline) {
+        const column = this.columns.find(c => c.id === columnId)
+        column.cards.push({
+          id: Date.now(),
+          title: title,
+          description: description || '',
+          deadline: deadline,
+          createdAt: new Date().toLocaleString(),
+          updatedAt: null,
+          status: 'planned',
+          isOverdue: false,
+          returnReason: null
+        })
+      }
+    }
   }
 })

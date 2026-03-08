@@ -86,3 +86,22 @@ h1 {
   font-size: 0.75em;
   color: #888;
 }
+
+.btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85em;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: #0079bf;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #026aa7;
+}
