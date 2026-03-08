@@ -3,6 +3,10 @@ Vue.component('kanban-card', {
     card: {
       type: Object,
       required: true
+    },
+    columnId: {
+      type: Number,
+      required: true
     }
   },
   template: `
@@ -10,6 +14,10 @@ Vue.component('kanban-card', {
       <h3>{{ card.title }}</h3>
       <p class="description">{{ card.description }}</p>
       <p class="dates">Дэдлайн: {{ card.deadline }}</p>
+      <p class="dates">Создано: {{ card.createdAt }}</p>
+      <p v-if="card.updatedAt" class="dates">Обновлено: {{ card.updatedAt }}</p>
+      <button v-if="columnId === 1" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
+      <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
     </div>
   `
 })
@@ -28,7 +36,10 @@ Vue.component('kanban-column', {
       <kanban-card 
         v-for="card in column.cards" 
         :key="card.id"
-        :card="card">
+        :card="card"
+        :column-id="column.id"
+        @edit-card="$emit('edit-card', $event)"
+        @delete-card="$emit('delete-card', $event)">
       </kanban-card>
       <button v-if="column.id === 1" @click="$emit('create-card', column.id)" class="btn btn-primary">
         + Создать задачу
@@ -66,6 +77,35 @@ let app = new Vue({
           isOverdue: false,
           returnReason: null
         })
+      }
+    },
+    editCard(cardId) {
+      for (let column of this.columns) {
+        const card = column.cards.find(c => c.id === cardId)
+        if (card) {
+          const title = prompt('Название задачи:', card.title)
+          const description = prompt('Описание:', card.description)
+          const deadline = prompt('Дэдлайн:', card.deadline)
+          
+          if (title) {
+            card.title = title
+            card.description = description || ''
+            card.deadline = deadline
+            card.updatedAt = new Date().toLocaleString()
+          }
+          break
+        }
+      }
+    },
+    deleteCard(cardId) {
+      if (confirm('Удалить задачу?')) {
+        for (let column of this.columns) {
+          const cardIndex = column.cards.findIndex(c => c.id === cardId)
+          if (cardIndex !== -1) {
+            column.cards.splice(cardIndex, 1)
+            break
+          }
+        }
       }
     }
   }

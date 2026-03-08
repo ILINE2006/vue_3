@@ -68,6 +68,7 @@ h1 {
   padding: 12px;
   margin-bottom: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  position: relative;
 }
 
 .kanban-card h3 {
@@ -85,6 +86,7 @@ h1 {
 .kanban-card .dates {
   font-size: 0.75em;
   color: #888;
+  margin: 3px 0;
 }
 
 .btn {
@@ -94,7 +96,15 @@ h1 {
   cursor: pointer;
   font-size: 0.85em;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
+}
+
+.btn-small {
+  padding: 5px 10px;
+  font-size: 0.75em;
+  width: auto;
+  display: inline-block;
+  margin: 2px;
 }
 
 .btn-primary {
@@ -102,6 +112,16 @@ h1 {
   color: #fff;
 }
 
-.btn-primary:hover {
-  background: #026aa7;
+.btn-secondary {
+  background: #f5a623;
+  color: #fff;
 }
+
+.btn-danger {
+  background: #eb5a46;
+  color: #fff;
+}
+
+.btn-primary:hover { background: #026aa7; }
+.btn-secondary:hover { background: #e0951f; }
+.btn-danger:hover { background: #d64a3a; }
