@@ -9,17 +9,25 @@ Vue.component('kanban-card', {
       required: true
     }
   },
+  mounted() {
+    console.log('Карточка загружена, columnId:', this.columnId)
+  },
   template: `
-    <div class="kanban-card">
+    <div class="kanban-card" :class="{ overdue: card.isOverdue, 'on-time': !card.isOverdue && columnId === 4 }">
       <h3>{{ card.title }}</h3>
       <p class="description">{{ card.description }}</p>
       <p class="dates">Дэдлайн: {{ card.deadline }}</p>
       <p class="dates">Создано: {{ card.createdAt }}</p>
       <p v-if="card.updatedAt" class="dates">Обновлено: {{ card.updatedAt }}</p>
+      <p v-if="card.returnReason" class="return-reason">Причина возврата: {{ card.returnReason }}</p>
       <div class="card-actions">
+        <p style="font-size: 10px; color: #999;">columnId: {{ columnId }}</p>
         <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
         <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
-        <button v-if="columnId < 4" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">Переместить</button>
+        <button v-if="columnId === 1" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В Работу</button>
+        <button v-if="columnId === 2" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В Тестирование</button>
+        <button v-if="columnId === 3" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-success">Выполнено</button>       
+        <button v-if="columnId === 3" @click="$emit('return-card', card.id)" class="btn btn-small btn-warning">Вернуть</button>
       </div>
     </div>
   `
@@ -43,7 +51,8 @@ Vue.component('kanban-column', {
         :column-id="column.id"
         @edit-card="$emit('edit-card', $event)"
         @delete-card="$emit('delete-card', $event)"
-        @move-card="(id, from, to) => $emit('move-card', id, from, to)">
+        @move-card="(id, from, to) => $emit('move-card', id, from, to)"
+        @return-card="$emit('return-card', $event)">
       </kanban-card>
       <button v-if="column.id === 1" @click="$emit('create-card', column.id)" class="btn btn-primary">
         + Создать задачу
@@ -51,7 +60,6 @@ Vue.component('kanban-column', {
     </div>
   `
 })
-
 
 let app = new Vue({
   el: '#app',
@@ -82,6 +90,7 @@ let app = new Vue({
           isOverdue: false,
           returnReason: null
         })
+        console.log('Карточка создана в колонке:', columnId)
       }
     },
     editCard(cardId) {
@@ -114,13 +123,38 @@ let app = new Vue({
       }
     },
     moveCard(cardId, fromColumnId, toColumnId) {
+      console.log('Перемещение:', fromColumnId, '→', toColumnId)
       const fromColumn = this.columns.find(c => c.id === fromColumnId)
       const toColumn = this.columns.find(c => c.id === toColumnId)
       const cardIndex = fromColumn.cards.findIndex(c => c.id === cardId)
       const card = fromColumn.cards.splice(cardIndex, 1)[0]
       
       card.updatedAt = new Date().toLocaleString()
+      
+      if (toColumnId === 4) {
+        const deadline = new Date(card.deadline)
+        const now = new Date()
+        card.isOverdue = deadline < now
+        card.status = card.isOverdue ? 'overdue' : 'completed'
+      }
+      
       toColumn.cards.push(card)
+    },
+    returnCard(cardId) {
+      const reason = prompt('Причина возврата:')
+      if (reason) {
+        for (let column of this.columns) {
+          const card = column.cards.find(c => c.id === cardId)
+          if (card && column.id === 3) {
+            card.returnReason = reason
+            card.updatedAt = new Date().toLocaleString()
+            const column2 = this.columns.find(c => c.id === 2)
+            column.cards.splice(column.cards.indexOf(card), 1)
+            column2.cards.push(card)
+            break
+          }
+        }
+      }
     }
   }
 })
