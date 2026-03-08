@@ -1,3 +1,19 @@
+Vue.component('kanban-card', {
+  props: {
+    card: {
+      type: Object,
+      required: true
+    }
+  },
+  template: `
+    <div class="kanban-card">
+      <h3>{{ card.title }}</h3>
+      <p class="description">{{ card.description }}</p>
+      <p class="dates">Дэдлайн: {{ card.deadline }}</p>
+    </div>
+  `
+})
+
 Vue.component('kanban-column', {
   props: {
     column: {
@@ -9,6 +25,11 @@ Vue.component('kanban-column', {
     <div class="kanban-column">
       <h2>{{ column.name }}</h2>
       <p>Задач: {{ column.cards.length }}</p>
+      <kanban-card 
+        v-for="card in column.cards" 
+        :key="card.id"
+        :card="card">
+      </kanban-card>
     </div>
   `
 })

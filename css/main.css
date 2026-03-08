@@ -61,3 +61,28 @@ h1 {
   color: #172b4d;
   margin-bottom: 15px;
 }
+
+.kanban-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+.kanban-card h3 {
+  font-size: 1em;
+  color: #172b4d;
+  margin-bottom: 8px;
+}
+
+.kanban-card .description {
+  font-size: 0.9em;
+  color: #5e6c84;
+  margin-bottom: 10px;
+}
+
+.kanban-card .dates {
+  font-size: 0.75em;
+  color: #888;
+}
