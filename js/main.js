@@ -16,8 +16,11 @@ Vue.component('kanban-card', {
       <p class="dates">Дэдлайн: {{ card.deadline }}</p>
       <p class="dates">Создано: {{ card.createdAt }}</p>
       <p v-if="card.updatedAt" class="dates">Обновлено: {{ card.updatedAt }}</p>
-      <button v-if="columnId === 1" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
-      <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
+      <div class="card-actions">
+        <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
+        <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
+        <button v-if="columnId < 4" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">Переместить</button>
+      </div>
     </div>
   `
 })
@@ -39,7 +42,8 @@ Vue.component('kanban-column', {
         :card="card"
         :column-id="column.id"
         @edit-card="$emit('edit-card', $event)"
-        @delete-card="$emit('delete-card', $event)">
+        @delete-card="$emit('delete-card', $event)"
+        @move-card="(id, from, to) => $emit('move-card', id, from, to)">
       </kanban-card>
       <button v-if="column.id === 1" @click="$emit('create-card', column.id)" class="btn btn-primary">
         + Создать задачу
@@ -47,6 +51,7 @@ Vue.component('kanban-column', {
     </div>
   `
 })
+
 
 let app = new Vue({
   el: '#app',
@@ -107,6 +112,15 @@ let app = new Vue({
           }
         }
       }
+    },
+    moveCard(cardId, fromColumnId, toColumnId) {
+      const fromColumn = this.columns.find(c => c.id === fromColumnId)
+      const toColumn = this.columns.find(c => c.id === toColumnId)
+      const cardIndex = fromColumn.cards.findIndex(c => c.id === cardId)
+      const card = fromColumn.cards.splice(cardIndex, 1)[0]
+      
+      card.updatedAt = new Date().toLocaleString()
+      toColumn.cards.push(card)
     }
   }
 })
