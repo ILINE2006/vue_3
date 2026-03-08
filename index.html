@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   <script defer src="js/vue.js"></script>
+   <script defer src="js/main.js"></script>
+   <link rel="stylesheet" href="css/main.css">
+   <title>NOTES</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Kanban Board</h1>
+    <div class="kanban-board">
+      <div v-for="column in columns" :key="column.id" class="kanban-column">
+        <h2>{{ column.name }}</h2>
+        <p>Задач: {{ column.cards.length }}</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+
+@font-face {
+  font-family: Another Danger;
+  src: url(/font/Another\ Danger\ -\ Demo.otf);
+}
+
+@font-face {
+  font-family: BlackCaspe;
+  src: url(/font/BlackCasper.ttf);
+}
+
+@font-face {
+  font-family: downcome;
+  src: url(/font/downcome.otf);
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: downcome;
+  background-image: url(/imges/2016x1134.webp);
+  min-height: 100vh;
+  padding: 20px;
+  letter-spacing: 5px;
+
+}
+
+#app {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+  font-family: Another Danger;
+  letter-spacing: 15px;
+}
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+}
+
+.kanban-column {
+  flex: 1;
+  min-width: 280px;
+  background: #ebecf0;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.kanban-column h2 {
+  font-size: 1.1em;
+  color: #172b4d;
+  margin-bottom: 15px;
+}
