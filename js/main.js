@@ -1,3 +1,18 @@
+Vue.component('kanban-column', {
+  props: {
+    column: {
+      type: Object,
+      required: true
+    }
+  },
+  template: `
+    <div class="kanban-column">
+      <h2>{{ column.name }}</h2>
+      <p>Задач: {{ column.cards.length }}</p>
+    </div>
+  `
+})
+
 let app = new Vue({
   el: '#app',
   data: {

@@ -13,10 +13,11 @@
   <div id="app">
     <h1>Kanban Board</h1>
     <div class="kanban-board">
-      <div v-for="column in columns" :key="column.id" class="kanban-column">
-        <h2>{{ column.name }}</h2>
-        <p>Задач: {{ column.cards.length }}</p>
-      </div>
+      <kanban-column 
+        v-for="column in columns" 
+        :key="column.id"
+        :column="column">
+      </kanban-column>
     </div>
   </div>
 </body>
