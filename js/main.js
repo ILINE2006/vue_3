@@ -9,9 +9,6 @@ Vue.component('kanban-card', {
       required: true
     }
   },
-  mounted() {
-    console.log('Карточка загружена, columnId:', this.columnId)
-  },
   template: `
     <div class="kanban-card" :class="{ overdue: card.isOverdue, 'on-time': !card.isOverdue && columnId === 4 }">
       <h3>{{ card.title }}</h3>
@@ -21,13 +18,12 @@ Vue.component('kanban-card', {
       <p v-if="card.updatedAt" class="dates">Обновлено: {{ card.updatedAt }}</p>
       <p v-if="card.returnReason" class="return-reason">Причина возврата: {{ card.returnReason }}</p>
       <div class="card-actions">
-        <p style="font-size: 10px; color: #999;">columnId: {{ columnId }}</p>
-        <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
-        <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
-        <button v-if="columnId === 1" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В Работу</button>
-        <button v-if="columnId === 2" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В Тестирование</button>
-        <button v-if="columnId === 3" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-success">Выполнено</button>       
-        <button v-if="columnId === 3" @click="$emit('return-card', card.id)" class="btn btn-small btn-warning">Вернуть</button>
+        <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">✏️</button>
+        <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">🗑️</button>
+        <button v-if="columnId === 1" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">→ В работу</button>
+        <button v-if="columnId === 2" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">→ Тестирование</button>
+        <button v-if="columnId === 3" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-success">✓ Выполнено</button>
+        <button v-if="columnId === 3" @click="$emit('return-card', card.id)" class="btn btn-small btn-warning">← Вернуть</button>
       </div>
     </div>
   `
@@ -71,6 +67,20 @@ let app = new Vue({
       { id: 4, name: 'Выполненные задачи', cards: [] }
     ]
   },
+  mounted() {
+    const saved = localStorage.getItem('kanbanBoard')
+    if (saved) {
+      this.columns = JSON.parse(saved)
+    }
+  },
+  watch: {
+    columns: {
+      handler(newVal) {
+        localStorage.setItem('kanbanBoard', JSON.stringify(newVal))
+      },
+      deep: true
+    }
+  },
   methods: {
     createCard(columnId) {
       const title = prompt('Название задачи:')
@@ -90,7 +100,6 @@ let app = new Vue({
           isOverdue: false,
           returnReason: null
         })
-        console.log('Карточка создана в колонке:', columnId)
       }
     },
     editCard(cardId) {
@@ -123,7 +132,6 @@ let app = new Vue({
       }
     },
     moveCard(cardId, fromColumnId, toColumnId) {
-      console.log('Перемещение:', fromColumnId, '→', toColumnId)
       const fromColumn = this.columns.find(c => c.id === fromColumnId)
       const toColumn = this.columns.find(c => c.id === toColumnId)
       const cardIndex = fromColumn.cards.findIndex(c => c.id === cardId)
