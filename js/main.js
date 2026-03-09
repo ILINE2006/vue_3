@@ -18,7 +18,7 @@ Vue.component('kanban-card', {
       <p v-if="card.updatedAt" class="dates">Обновлено: {{ card.updatedAt }}</p>
       <p v-if="card.returnReason" class="return-reason">Причина возврата: {{ card.returnReason }}</p>
       <div class="card-actions">
-        <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактирование</button>
+        <button v-if="columnId <= 3" @click="$emit('edit-card', card.id)" class="btn btn-small btn-secondary">Редактировать</button>
         <button v-if="columnId === 1" @click="$emit('delete-card', card.id)" class="btn btn-small btn-danger">Удалить</button>
         <button v-if="columnId === 1" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В работу</button>
         <button v-if="columnId === 2" @click="$emit('move-card', card.id, columnId, columnId + 1)" class="btn btn-small btn-primary">В тестирование</button>
