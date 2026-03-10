@@ -11,18 +11,32 @@
 <body>
   <div id="app">
     <h1>Kanban Board</h1>
+    
     <div class="kanban-board">
       <kanban-column 
         v-for="column in columns" 
         :key="column.id"
         :column="column"
-        @create-card="createCard"
-        @edit-card="editCard"
+        @create-card="openCreateModal"
+        @edit-card="openEditModal"
         @delete-card="deleteCard"
         @move-card="moveCard"
-        @return-card="returnCard">
+        @return-card="openReturnModal">
       </kanban-column>
     </div>
+    <task-form 
+      v-if="showForm"
+      :mode="modalMode"
+      :card="selectedCard"
+      @close="closeForm"
+      @submit="handleFormSubmit">
+    </task-form>
+    <return-form 
+      v-if="showReturnForm"
+      :card="cardForReturn"
+      @close="closeReturnForm"
+      @submit-return="handleReturnSubmit">
+    </return-form>
   </div>
 </body>
 </html>

@@ -40,105 +40,210 @@ h1 {
   margin-bottom: 30px;
 }
 
+
 .kanban-board {
   display: flex;
   gap: 20px;
   overflow-x: auto;
+  padding: 10px 0;
 }
 
 .kanban-column {
-  flex: 1;
-  min-width: 280px;
-  background: #ebecf0;
-  border-radius: 10px;
+  flex: 0 0 280px;
+  background: #eef2f7;
+  border-radius: 8px;
   padding: 15px;
+  min-height: 500px;
 }
 
 .kanban-column h2 {
-  font-size: 1.1em;
-  color: #d01d4c;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #1a1a2e;
+}
+
+.kanban-column > p {
+  font-size: 13px;
+  color: #666;
   margin-bottom: 15px;
 }
+
 
 .kanban-card {
   background: #fff;
   border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
-  position: relative;
-  border-left: 4px solid transparent;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #e0e0e0;
 }
 
 .kanban-card.overdue {
-  border-left-color: #eb5a46;
-  background: #ffebe6;
+  border-left: 4px solid #da4a4a;
 }
 
 .kanban-card.on-time {
-  background: #e6f9e6;
+  border-left: 4px solid #28a745;
 }
 
 .kanban-card h3 {
-  font-size: 1em;
-  color: #172b4d;
+  font-size: 15px;
   margin-bottom: 8px;
+  color: #1a1a2e;
 }
 
 .kanban-card .description {
-  font-size: 0.9em;
-  color: #5e6c84;
+  font-size: 13px;
+  color: #555;
   margin-bottom: 10px;
+  white-space: pre-wrap;
 }
 
 .kanban-card .dates {
-  font-size: 0.75em;
+  font-size: 12px;
   color: #888;
-  margin: 3px 0;
+  margin: 4px 0;
 }
 
 .kanban-card .return-reason {
-  font-size: 0.8em;
-  color: #eb5a46;
-  background: #ffebe6;
-  padding: 5px 8px;
-  border-radius: 4px;
-  margin-top: 8px;
+  font-size: 12px;
+  color: #da4a4a;
+  margin: 8px 0;
+  font-style: italic;
 }
 
 .card-actions {
-  margin-top: 10px;
   display: flex;
-  gap: 5px;
   flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
 }
 
+
 .btn {
-  padding: 8px 15px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 13px;
   cursor: pointer;
-  font-size: 0.85em;
-  width: 100%;
-  margin-top: 5px;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background: #a21339;
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #a21339;
+  color: #ffffff;
+}
+
+.btn-success {
+  background: #a21339;
+  color: #fff;
+}
+
+.btn-warning {
+  background: #a21339;
+  color: #ffffff;
+}
+
+.btn-danger {
+  background: #a21339;
+  color: #fff;
 }
 
 .btn-small {
   padding: 5px 10px;
-  font-size: 0.75em;
-  width: auto;
-  display: inline-block;
-  margin: 2px;
+  font-size: 12px;
+  border-radius: 4px;
 }
 
-.btn-primary { background: #d01d4c; color: #fff; }
-.btn-secondary { background: #d01d4c; color: #fff; }
-.btn-danger { background: #d01d4c; color: #fff; }
-.btn-success { background: #d01d4c; color: #fff; }
-.btn-warning { background: #d01d4c; color: #ffffff; }
 
-.btn-primary:hover {  background: #770e2a;  }
-.btn-secondary:hover {  background: #770e2a;  }
-.btn-danger:hover {  background: #770e2a;  }
-.btn-success:hover {  background: #770e2a;  }
-.btn-warning:hover {  background: #770e2a;  }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  color: #1a1a2e;
+}
+
+.modal-content .card-title {
+  font-weight: 600;
+  color: #666;
+  margin: 0 0 20px;
+  font-style: italic;
+}
+
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 14px;
+  background: #fff;
+  color: #333;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #19314C;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #999;
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #da4a4a;
+}
+
+.form-group .error-message {
+  color: #da4a4a;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+
