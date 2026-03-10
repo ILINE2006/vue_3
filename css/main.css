@@ -48,6 +48,16 @@ h1 {
   padding: 10px 0;
 }
 
+.kanban-column.drag-over {
+  background: #d0d8e3;
+  border: 2px dashed #19314C;
+}
+.kanban-card.dragging {
+  opacity: 0.5;
+  transform: rotate(3deg);
+  cursor: grabbing;
+}
+
 .kanban-column {
   flex: 0 0 280px;
   background: #eef2f7;

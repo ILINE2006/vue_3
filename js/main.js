@@ -169,7 +169,11 @@ Vue.component('kanban-card', {
     }
   },
   template: `
-    <div class="kanban-card" :class="{ overdue: card.isOverdue, 'on-time': !card.isOverdue && columnId === 4 }">
+    <div class="kanban-card" 
+     :class="{ overdue: card.isOverdue, 'on-time': !card.isOverdue && columnId === 4 }"
+     draggable="true"
+     @dragstart="onDragStart"
+     @dragend="onDragEnd">
       <h3>{{ card.title }}</h3>
       <p class="description">{{ card.description }}</p>
       <p class="dates">Дэдлайн: {{ card.deadline }}</p>
@@ -185,7 +189,17 @@ Vue.component('kanban-card', {
         <button v-if="columnId === 3" @click="$emit('return-card', card.id)" class="btn btn-small btn-warning">Вернуть</button>
       </div>
     </div>
-  `
+  `,
+  methods: {
+    onDragStart(event) {
+      event.dataTransfer.setData('cardId', this.card.id)
+      event.dataTransfer.setData('fromColumnId', this.columnId)
+      event.dataTransfer.effectAllowed = 'move'
+    },
+    onDragEnd(event) {
+      event.target.classList.remove('dragging')
+    }
+  }
 })
 
 Vue.component('kanban-column', {
@@ -195,8 +209,17 @@ Vue.component('kanban-column', {
       required: true
     }
   },
+  data() {
+    return {
+      isDragOver: false
+    }
+  },
   template: `
-    <div class="kanban-column">
+    <div class="kanban-column"
+         @drop="onDrop"
+         @dragover="onDragOver"
+         @dragleave="onDragLeave"
+         :class="{ 'drag-over': isDragOver }">
       <h2>{{ column.name }}</h2>
       <p>Задач: {{ column.cards.length }}</p>
       <kanban-card 
@@ -213,7 +236,31 @@ Vue.component('kanban-column', {
         + Создать задачу
       </button>
     </div>
-  `
+  `,
+  methods: {
+    onDragOver(event) {
+      event.preventDefault()
+      event.dataTransfer.dropEffect = 'move'
+      this.isDragOver = true
+    },
+    onDragLeave(event) {
+      this.isDragOver = false
+    },
+    onDrop(event) {
+      event.preventDefault()
+      this.isDragOver = false
+      
+      const cardId = parseInt(event.dataTransfer.getData('cardId'))
+      const fromColumnId = parseInt(event.dataTransfer.getData('fromColumnId'))
+      const toColumnId = this.column.id
+      
+      if (fromColumnId === toColumnId) {
+        return
+      }
+      
+      this.$emit('move-card', cardId, fromColumnId, toColumnId)
+    }
+  }
 })
 
 let app = new Vue({
